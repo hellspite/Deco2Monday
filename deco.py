@@ -9,18 +9,6 @@ PASSWORD = os.environ["DECO_PASS"]
 API_URL = "https://straighttohell.eu/api/json/manage_orders/find"
 
 
-def is_monday(today):
-    """Return a boolean
-
-    Checks if today is monday
-    """
-
-    if today.weekday() == 0:
-        return True
-    else:
-        return False
-
-
 def clean_orders(response_json):
     """Return a list
 
@@ -50,16 +38,8 @@ def clean_orders(response_json):
 def get_orders():
     """Return a list of orders
 
-    Retrieves the data of the orders from Deco API
+    Retrieve the data of the orders from Deco API
     """
-
-    # Retrieve today's date at midnight
-    today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-
-    # if is_monday(today):
-    #     start_date = date.today() - timedelta(days=3)
-    # else:
-    #     start_date = date.today() - timedelta(days=1)
 
     start_date = date.today() - timedelta(days=10)
 

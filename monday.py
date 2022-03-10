@@ -20,8 +20,6 @@ def write_new_orders(orders):
 
     for order in orders:
         try:
-            # order_date = order["date_ordered"].strftime("%Y-%m-%dT00:00:00")
-            # due_date = order["date_due"].strftime("%Y-%m-%dT00:00:00")
             if order["is_priority"] == "true":
                 is_priority = "Tassativo"
             else:

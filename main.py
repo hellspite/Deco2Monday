@@ -8,5 +8,5 @@ import monday
 if __name__ == '__main__':
 
     orders = deco.get_orders()
-    print(len(orders))
+    print(f"Number of orders retrieved from Deco: {len(orders)}")
     monday.write_new_orders(orders)
