@@ -2,7 +2,7 @@
 
 import requests
 import os
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 USERNAME = os.environ["DECO_USER"]
 PASSWORD = os.environ["DECO_PASS"]
