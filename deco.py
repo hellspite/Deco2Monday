@@ -15,6 +15,7 @@ def clean_orders(response_json):
     Select orders that are not already programmed.
     """
     cleans = []
+
     # print(len(response_json["orders"]))
     for order in response_json["orders"]:
         lines_to_do = False
@@ -28,6 +29,11 @@ def clean_orders(response_json):
             else:
                 if line["production_assigned_to"]["firstname"] != "Nicola":
                     lines_to_do = True
+
+        # if orders are still quotes or if they have been cancelled
+        # don't include them in the list
+        if order["order_status"] == 7 or order["order_status"] == 4:
+            lines_to_do = False
 
         if lines_to_do:
             cleans.append(order)
