@@ -27,7 +27,7 @@ def clean_orders(response_json):
     Select orders that are not already programmed.
     """
     cleans = []
-    print(len(response_json["orders"]))
+    # print(len(response_json["orders"]))
     for order in response_json["orders"]:
         lines_to_do = False
         for line in order["order_lines"]:
@@ -56,10 +56,12 @@ def get_orders():
     # Retrieve today's date at midnight
     today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
-    if is_monday(today):
-        start_date = date.today() - timedelta(days=3)
-    else:
-        start_date = date.today() - timedelta(days=1)
+    # if is_monday(today):
+    #     start_date = date.today() - timedelta(days=3)
+    # else:
+    #     start_date = date.today() - timedelta(days=1)
+
+    start_date = date.today() - timedelta(days=10)
 
     start_date_formatted = start_date.strftime("%Y-%m-%dT00:00:00")
 
