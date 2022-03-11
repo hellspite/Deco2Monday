@@ -25,6 +25,12 @@ def write_new_orders(orders):
             else:
                 is_priority = ""
 
+            billing_details = order["billing_details"]
+            if billing_details["company"] != "":
+                customer_name = billing_details["company"]
+            else:
+                customer_name = f"{billing_details['firstname']} {billing_details['lastname']}"
+
             query = "mutation ($myItemName: String!, $boardId: Int!, $groupId: String!, $columnVals: JSON!) " \
                     "{ create_item (board_id:$boardId, item_name:$myItemName, " \
                     "group_id:$groupId, column_values:$columnVals) { id } }"
@@ -34,7 +40,7 @@ def write_new_orders(orders):
                 "groupId": GROUP_ID,
                 "columnVals": json.dumps({
                     "numero_d_ordine": str(order["order_id"]),
-                    # "nome_cliente": "cliente test",
+                    "nome_cliente": customer_name,
                     "data_dell_ordine": order["date_ordered"][:-9],
                     "data_di_consegna_o_spedizione3": order["date_due"][:-9],
                     "priority": is_priority
