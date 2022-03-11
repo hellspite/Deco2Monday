@@ -8,7 +8,16 @@ BOARD_ID = "2241731758"
 GROUP_ID = "nuovo_gruppo74198"
 headers = {"Authorization": API_KEY}
 
-# query = '{ boards (ids: 2241731758) {name id description columns{id title}} }'
+
+def test_query():
+
+    query = '{ boards (ids: 2241731758) {name id description columns{id title}} }'
+
+    data = {'query': query}
+
+    response = requests.post(url=API_URL, json=data, headers=headers)
+
+    print(response.json())
 
 
 def write_new_orders(orders):
