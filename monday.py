@@ -30,9 +30,10 @@ def write_new_orders(orders):
     for order in orders:
         try:
             if order["is_priority"] == "true":
-                is_priority = "Tassativo"
+                is_priority = "0"
+                print(f"{order['order_id']}: {order['is_priority']}")
             else:
-                is_priority = ""
+                is_priority = "1"
 
             billing_details = order["billing_details"]
             if billing_details["company"] != "":
@@ -40,11 +41,16 @@ def write_new_orders(orders):
             else:
                 customer_name = f"{billing_details['firstname']} {billing_details['lastname']}"
 
+            if order["job_name"] == "":
+                job_name = customer_name
+            else:
+                job_name = order["job_name"]
+
             query = "mutation ($myItemName: String!, $boardId: Int!, $groupId: String!, $columnVals: JSON!) " \
                     "{ create_item (board_id:$boardId, item_name:$myItemName, " \
                     "group_id:$groupId, column_values:$columnVals) { id } }"
             query_vars = {
-                "myItemName": order["job_name"],
+                "myItemName": job_name,
                 "boardId": int(BOARD_ID),
                 "groupId": GROUP_ID,
                 "columnVals": json.dumps({
@@ -52,7 +58,7 @@ def write_new_orders(orders):
                     "nome_cliente": customer_name,
                     "data_dell_ordine": order["date_ordered"][:-9],
                     "data_di_consegna_o_spedizione3": order["date_due"][:-9],
-                    "priority": is_priority
+                    "priority": {"status": is_priority}
                 })
             }
 
@@ -60,6 +66,8 @@ def write_new_orders(orders):
 
             response = requests.post(url=API_URL, json=data, headers=headers)
 
+            print(f"Order {order['order_id']} - {customer_name} - {job_name}:")
             print(response.json())
+
         except TypeError:
             print(f"TypeError with order: {order['order_id']}")
