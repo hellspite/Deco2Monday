@@ -29,11 +29,12 @@ def write_new_orders(orders):
 
     for order in orders:
         try:
-            if order["is_priority"] == "true":
-                is_priority = "0"
-                print(f"{order['order_id']}: {order['is_priority']}")
+            if order["is_priority"]:
+                is_priority = "Tassativo"
+                print(f"{order['order_id']} priority: {order['is_priority']}")
             else:
-                is_priority = "1"
+                is_priority = "Standard"
+                print(f"{order['order_id']} priority: {order['is_priority']}")
 
             billing_details = order["billing_details"]
             if billing_details["company"] != "":
@@ -58,7 +59,7 @@ def write_new_orders(orders):
                     "nome_cliente": customer_name,
                     "data_dell_ordine": order["date_ordered"][:-9],
                     "data_di_consegna_o_spedizione3": order["date_due"][:-9],
-                    "priority": {"status": is_priority}
+                    "priority": {"label": is_priority}
                 })
             }
 
