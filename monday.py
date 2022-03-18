@@ -20,12 +20,36 @@ def test_query():
     print(response.json())
 
 
+def check_deco_group():
+    """Return list
+
+    Get the order ids of the orders already in the Deco Group on Monday
+    """
+    query = '{ boards (ids: 2241731758) {name id description items{name, group{id}, column_values{title text}} } }'
+
+    data = {'query': query}
+
+    response = requests.post(url=API_URL, json=data, headers=headers)
+
+    orders = response.json()["data"]["boards"][0]["items"]
+
+    orders_from_deco = []
+
+    for order in orders:
+        if order["group"]["id"] == GROUP_ID:
+            orders_from_deco.append(order["column_values"][1]["text"])
+
+    return orders_from_deco
+
+
 def write_new_orders(orders):
     """input list
     return boolean
 
     Take a list of orders from Deco and generate new items on Monday.com
     """
+
+    deco_group = check_deco_group()
 
     for order in orders:
         try:
@@ -63,12 +87,15 @@ def write_new_orders(orders):
                 })
             }
 
-            data = {'query': query, 'variables': query_vars}
+            # Check if the order is already in the deco group
+            if str(order["order_id"]) not in deco_group:
 
-            response = requests.post(url=API_URL, json=data, headers=headers)
+                data = {'query': query, 'variables': query_vars}
 
-            print(f"Order {order['order_id']} - {customer_name} - {job_name}:")
-            print(response.json())
+                response = requests.post(url=API_URL, json=data, headers=headers)
+
+                print(f"Order {order['order_id']} - {customer_name} - {job_name}:")
+                print(response.json())
 
         except TypeError:
             print(f"TypeError with order: {order['order_id']}")

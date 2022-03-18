@@ -18,13 +18,17 @@ def clean_orders(response_json):
 
     # print(len(response_json["orders"]))
     for order in response_json["orders"]:
+        print(f"Processing order {order['order_id']}")
+
         lines_to_do = False
         for line in order["order_lines"]:
             try:
                 if line["production_assigned_to"]["firstname"] is not None:
-                    print(line["production_assigned_to"]["firstname"])
+                    # print(f"{line['production_assigned_to']['firstname']}")
+                    pass
             except TypeError as error:
                 lines_to_do = True
+                print(f"TypeError on order {order['order_id']}")
                 print(error)
             else:
                 if line["production_assigned_to"]["firstname"] != "Nicola":
@@ -33,9 +37,11 @@ def clean_orders(response_json):
         # if orders are still quotes or if they have been cancelled
         # don't include them in the list
         if order["order_status"] == 7 or order["order_status"] == 4:
+            print(f"Order {order['order_id']} cancelled or blocked")
             lines_to_do = False
 
         if lines_to_do:
+            print(f"Order {order['order_id']} added")
             cleans.append(order)
 
     return cleans
@@ -47,7 +53,7 @@ def get_orders():
     Retrieve the data of the orders from Deco API
     """
 
-    start_date = date.today() - timedelta(days=10)
+    start_date = date.today() - timedelta(days=14)
 
     start_date_formatted = start_date.strftime("%Y-%m-%dT00:00:00")
 
