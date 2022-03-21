@@ -21,18 +21,13 @@ def clean_orders(response_json):
         print(f"Processing order {order['order_id']}")
 
         lines_to_do = False
-        for line in order["order_lines"]:
-            try:
-                if line["production_assigned_to"]["firstname"] is not None:
-                    # print(f"{line['production_assigned_to']['firstname']}")
-                    pass
-            except TypeError as error:
+        line = order["order_lines"][0]
+        try:
+            if line["production_assigned_to"]["firstname"] != "Nicola":
                 lines_to_do = True
-                print(f"TypeError on order {order['order_id']}")
-                print(error)
-            else:
-                if line["production_assigned_to"]["firstname"] != "Nicola":
-                    lines_to_do = True
+        except TypeError as error:
+            lines_to_do = True
+            print(f"TypeError on order {order['order_id']}")
 
         # if orders are still quotes or if they have been cancelled
         # don't include them in the list
