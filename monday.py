@@ -71,11 +71,13 @@ def write_new_orders(orders):
             else:
                 job_name = order["job_name"]
 
+            item_name = f"{order['order_id']} - {customer_name} - {job_name}"
+
             query = "mutation ($myItemName: String!, $boardId: Int!, $groupId: String!, $columnVals: JSON!) " \
                     "{ create_item (board_id:$boardId, item_name:$myItemName, " \
                     "group_id:$groupId, column_values:$columnVals) { id } }"
             query_vars = {
-                "myItemName": job_name,
+                "myItemName": item_name,
                 "boardId": int(BOARD_ID),
                 "groupId": GROUP_ID,
                 "columnVals": json.dumps({
