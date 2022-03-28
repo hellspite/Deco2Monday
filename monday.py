@@ -37,7 +37,7 @@ def check_deco_group():
 
     for order in orders:
         if order["group"]["id"] == GROUP_ID:
-            orders_from_deco.append(order["column_values"][1]["text"])
+            orders_from_deco.append(order["column_values"][0]["text"])
 
     return orders_from_deco
 
@@ -89,15 +89,14 @@ def write_new_orders(orders):
                 })
             }
 
-            # Check if the order is already in the deco group
-            if str(order["order_id"]) not in deco_group:
-
-                data = {'query': query, 'variables': query_vars}
-
-                response = requests.post(url=API_URL, json=data, headers=headers)
-
-                print(f"Order {order['order_id']} - {customer_name} - {job_name}:")
-                print(response.json())
-
         except TypeError:
             print(f"TypeError with order: {order['order_id']}")
+
+        # Check if the order is already in the deco group
+        if str(order["order_id"]) not in deco_group:
+            data = {'query': query, 'variables': query_vars}
+
+            response = requests.post(url=API_URL, json=data, headers=headers)
+
+            print(f"Order {order['order_id']} - {customer_name} - {job_name}:")
+            print(response.json())
