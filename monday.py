@@ -11,13 +11,13 @@ headers = {"Authorization": API_KEY}
 
 def test_query():
 
-    query = '{ boards (ids: 2241731758) {name id description columns{id title}} }'
+    query = '{ boards (ids: 2241731758) {name id description items{name group{id}}} }'
 
     data = {'query': query}
 
     response = requests.post(url=API_URL, json=data, headers=headers)
 
-    print(response.json())
+    print(response.json()["data"]["boards"][0]["items"][0]["name"][0:5])
 
 
 def check_deco_group():
@@ -25,7 +25,7 @@ def check_deco_group():
 
     Get the order ids of the orders already in the Deco Group on Monday
     """
-    query = '{ boards (ids: 2241731758) {name id description items{name, group{id}, column_values{title text}} } }'
+    query = '{ boards (ids: 2241731758) {name id description items{name, group{id}} } }'
 
     data = {'query': query}
 
@@ -37,7 +37,7 @@ def check_deco_group():
 
     for order in orders:
         if order["group"]["id"] == GROUP_ID:
-            orders_from_deco.append(order["column_values"][0]["text"])
+            orders_from_deco.append(order["name"][0:5])
 
     return orders_from_deco
 
@@ -51,6 +51,7 @@ def write_new_orders(orders):
 
     deco_group = check_deco_group()
 
+    print(f"Orders len: {len(orders)}")
     for order in orders:
         try:
             if order["is_priority"]:
