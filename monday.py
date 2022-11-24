@@ -11,13 +11,15 @@ headers = {"Authorization": API_KEY}
 
 def test_query():
 
-    query = '{ boards (ids: 2241731758) {name id description items{name group{id}}} }'
+    # query = '{ boards (ids: 2241731758) {name id description items{name group{id}}} }'
+
+    query = '{ boards (ids: 2241731758) {columns {id title}} }'
 
     data = {'query': query}
 
     response = requests.post(url=API_URL, json=data, headers=headers)
 
-    print(response.json()["data"]["boards"][0]["items"][0]["name"][0:5])
+    print(response.json())
 
 
 def check_deco_group():
@@ -82,6 +84,7 @@ def write_new_orders(orders):
                 "boardId": int(BOARD_ID),
                 "groupId": GROUP_ID,
                 "columnVals": json.dumps({
+                    "stato_16": order["assigned_to"]["firstname"],
                     "numero_d_ordine": str(order["order_id"]),
                     "nome_cliente": customer_name,
                     "data_dell_ordine": order["date_ordered"][:-9],
