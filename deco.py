@@ -38,6 +38,10 @@ def clean_orders(response_json):
                 lines_to_do = True
             print(f"TypeError on order {order['order_id']}")
 
+        # Check if it's a Tribe Jiu Jitsu order
+        if order["store"]["owner"]["company"] == "tribejiujitsushop":
+            lines_to_do = False
+
         # if orders are still quotes or if they have been cancelled
         # don't include them in the list
         if order["order_status"] == 7 or order["order_status"] == 4:
