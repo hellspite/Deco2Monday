@@ -61,7 +61,7 @@ def get_orders():
     Retrieve the data of the orders from Deco API
     """
 
-    start_date = date.today() - timedelta(days=30)
+    start_date = date.today() - timedelta(days=14)
 
     start_date_formatted = start_date.strftime("%Y-%m-%dT00:00:00")
 
