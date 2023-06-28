@@ -96,8 +96,8 @@ def write_new_orders(orders):
                     "stato_16": sales,
                     "numero_d_ordine": str(order["order_id"]),
                     "nome_cliente": customer_name,
-                    "data_dell_ordine": order["date_ordered"][:-9],
-                    "data_di_consegna_o_spedizione3": order["date_due"][:-9],
+                    "data_dell_ordine": order["date_ordered"][:-19],
+                    "data_di_consegna_o_spedizione3": order["date_due"][:-19],
                     "priority": {"label": is_priority}
                 })
             }
