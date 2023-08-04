@@ -83,6 +83,12 @@ def write_new_orders(orders):
             else:
                 sales = order["assigned_to"]["firstname"]
 
+            if order["shipping_method"]['name'][0] == "Ritiro":
+                shipping_method = "Ritiro"
+                print(f"{order['order_id']} spedizione: {shipping_method}")
+            else:
+                shipping_method = "Spedizione"
+
             item_name = f"{order['order_id']} - {customer_name} - {job_name}"
 
             query = "mutation ($myItemName: String!, $boardId: Int!, $groupId: String!, $columnVals: JSON!) " \
@@ -98,7 +104,8 @@ def write_new_orders(orders):
                     "nome_cliente": customer_name,
                     "data_dell_ordine": order["date_ordered"][:-19],
                     "data_di_consegna_o_spedizione3": order["date_due"][:-19],
-                    "priority": {"label": is_priority}
+                    "priority": {"label": is_priority},
+                    "stato106": {"label": shipping_method}
                 })
             }
 
