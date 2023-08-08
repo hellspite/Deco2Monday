@@ -84,10 +84,11 @@ def write_new_orders(orders):
                 sales = order["assigned_to"]["firstname"]
 
             if order["shipping_method"]['name'][0] == "Ritiro":
-                shipping_method = "Ritiro"
+                shipping_method = "RITIRO"
                 print(f"{order['order_id']} spedizione: {shipping_method}")
             else:
-                shipping_method = "Spedizione"
+                shipping_method = "SPEDIZIONE"
+                print(f"{order['order_id']} spedizione: {shipping_method}")
 
             item_name = f"{order['order_id']} - {customer_name} - {job_name}"
 
@@ -105,7 +106,7 @@ def write_new_orders(orders):
                     "data_dell_ordine": order["date_ordered"][:-19],
                     "data_di_consegna_o_spedizione3": order["date_due"][:-19],
                     "priority": {"label": is_priority},
-                    "stato106": {"label": shipping_method}
+                    "stato_106": {"label": shipping_method}
                 })
             }
 
