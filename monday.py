@@ -83,7 +83,7 @@ def write_new_orders(orders):
             else:
                 sales = order["assigned_to"]["firstname"]
 
-            if order["shipping_method"]['name'][0] == "Ritiro":
+            if order["shipping_method"]['name'][0:6] == "Ritiro":
                 shipping_method = "RITIRO"
                 print(f"{order['order_id']} spedizione: {shipping_method}")
             else:
