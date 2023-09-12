@@ -53,7 +53,6 @@ def write_new_orders(orders):
 
     deco_group = check_deco_group()
 
-    print(f"Orders len: {len(orders)}")
     for order in orders:
         try:
             if order["is_priority"]:
