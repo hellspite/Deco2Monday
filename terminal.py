@@ -10,12 +10,13 @@ if __name__ == '__main__':
     days_back = 14
     no_write = False
 
-    argv1 = sys.argv[1]
-    if type(argv1) is int:
-        days_back = argv1
-    elif type(argv1) is str:
-        if argv1 == "no-write":
-            no_write = True
+    if len(sys.argv) > 1:
+        argv1 = sys.argv[1]
+        if type(argv1) is int:
+            days_back = argv1
+        elif type(argv1) is str:
+            if argv1 == "no-write":
+                no_write = True
 
     if len(sys.argv) > 2:
         argv2 = sys.argv[2]
