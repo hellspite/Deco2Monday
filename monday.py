@@ -6,7 +6,7 @@ API_URL = "https://api.monday.com/v2"
 API_KEY = os.environ["MONDAY_API"]
 BOARD_ID = "2241731758"
 GROUP_ID = "nuovo_gruppo74198"
-headers = {"Authorization": API_KEY}
+headers = {"Authorization": API_KEY, "API-Version": "2023-10"}
 
 
 def test_query():
@@ -27,17 +27,16 @@ def check_deco_group():
 
     Get the order ids of the orders already in the Deco Group on Monday
     """
-    query = '{ boards (ids: 2241731758) {name id description items{name, group{id}} } }'
+    query = '{ boards (ids: 2241731758) {items_page{ items {name, group{id}}} }}'
 
     data = {'query': query}
 
     response = requests.post(url=API_URL, json=data, headers=headers)
-
-    orders = response.json()["data"]["boards"][0]["items"]
+    orders = response.json()["data"]["boards"][0]["items_page"]
 
     orders_from_deco = []
 
-    for order in orders:
+    for order in orders["items"]:
         if order["group"]["id"] == GROUP_ID:
             orders_from_deco.append(order["name"][0:5])
 
@@ -91,7 +90,7 @@ def write_new_orders(orders):
 
             item_name = f"{order['order_id']} - {customer_name} - {job_name}"
 
-            query = "mutation ($myItemName: String!, $boardId: Int!, $groupId: String!, $columnVals: JSON!) " \
+            query = "mutation ($myItemName: String!, $boardId: ID!, $groupId: String!, $columnVals: JSON!) " \
                     "{ create_item (board_id:$boardId, item_name:$myItemName, " \
                     "group_id:$groupId, column_values:$columnVals) { id } }"
             query_vars = {
