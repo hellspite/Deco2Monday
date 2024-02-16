@@ -27,16 +27,24 @@ def check_deco_group():
 
     Get the order ids of the orders already in the Deco Group on Monday
     """
-    query = '{ boards (ids: 2241731758) {items_page{ items {name, group{id}}} }}'
+    query = '{ boards (ids: 2241731758) {items_page{ cursor items {name, group{id}}} }}'
 
     data = {'query': query}
 
     response = requests.post(url=API_URL, json=data, headers=headers)
-    orders = response.json()["data"]["boards"][0]["items_page"]
+    orders = response.json()["data"]["boards"][0]["items_page"]["items"]
+    cursor = response.json()["data"]["boards"][0]["items_page"]["cursor"]
+
+    while cursor:
+        query = "{ next_items_page (limit: 100, cursor: \"" + cursor + "\") { cursor items {name, group{id}} }}"
+        data = {'query': query}
+        response = requests.post(url=API_URL, json=data, headers=headers)
+        orders += response.json()["data"]["next_items_page"]["items"]
+        cursor = response.json()["data"]["next_items_page"]["cursor"]
 
     orders_from_deco = []
 
-    for order in orders["items"]:
+    for order in orders:
         if order["group"]["id"] == GROUP_ID:
             orders_from_deco.append(order["name"][0:5])
 
