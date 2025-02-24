@@ -27,13 +27,13 @@ def clean_orders(response_json):
         try:
             if line["production_assigned_to"]["firstname"] != "Nicola":
                 lines_to_do = True
-        except TypeError as error:
+        except (TypeError, KeyError) as error:
             if lines_num > 1:
                 line2 = order["order_lines"][1]
-                if line2["production_assigned_to"] is None:
-                    lines_to_do = True
-                elif line2["production_assigned_to"]["firstname"] == "Nicola":
-                    lines_to_do = False
+                # if line2["production_assigned_to"] is None:
+                #     lines_to_do = True
+                # elif line2["production_assigned_to"]["firstname"] == "Nicola":
+                #     lines_to_do = False
             else:
                 lines_to_do = True
             print(f"TypeError on order {order['order_id']}")
