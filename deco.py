@@ -1,11 +1,13 @@
 # Manages the Deco part of the app
-
+from dotenv import load_dotenv
 import requests
 import os
 from datetime import date, timedelta
 
-USERNAME = os.environ["DECO_USER"]
-PASSWORD = os.environ["DECO_PASS"]
+load_dotenv()
+
+USERNAME = os.getenv("DECO_USER")
+PASSWORD = os.getenv("DECO_PASS")
 API_URL = "https://straighttohell.eu/api/json/manage_orders/find"
 
 
@@ -30,10 +32,13 @@ def clean_orders(response_json):
         except (TypeError, KeyError) as error:
             if lines_num > 1:
                 line2 = order["order_lines"][1]
-                # if line2["production_assigned_to"] is None:
-                #     lines_to_do = True
-                # elif line2["production_assigned_to"]["firstname"] == "Nicola":
-                #     lines_to_do = False
+                try:
+                    if line2["production_assigned_to"] is None:
+                        lines_to_do = True
+                    elif line2["production_assigned_to"]["firstname"] == "Nicola":
+                        lines_to_do = False
+                except (TypeError, KeyError) as error:
+                    lines_to_do = True
             else:
                 lines_to_do = True
             print(f"TypeError on order {order['order_id']}")

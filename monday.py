@@ -1,9 +1,12 @@
+from dotenv import load_dotenv
 import requests
 import os
 import json
 
+load_dotenv()
+
 API_URL = "https://api.monday.com/v2"
-API_KEY = os.environ["MONDAY_API"]
+API_KEY = os.getenv("MONDAY_API")
 BOARD_ID = "2241731758"
 GROUP_ID = "nuovo_gruppo74198"
 headers = {"Authorization": API_KEY, "API-Version": "2023-10"}
