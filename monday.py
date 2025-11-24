@@ -121,6 +121,7 @@ def write_new_orders(orders):
 
         except TypeError:
             print(f"TypeError with order: {order['order_id']}")
+            continue
 
         # Check if the order is already in the deco group
         if str(order["order_id"]) not in deco_group:
