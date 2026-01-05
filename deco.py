@@ -8,7 +8,7 @@ load_dotenv()
 
 USERNAME = os.getenv("DECO_USER")
 PASSWORD = os.getenv("DECO_PASS")
-API_URL = "https://straighttohell.eu/api/json/manage_orders/find"
+API_URL = "https://merchandising.straighttohell.eu/api/json/manage_orders/find"
 
 
 def clean_orders(response_json):
