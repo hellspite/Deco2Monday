@@ -11,15 +11,14 @@ PASSWORD = os.getenv("DECO_PASS")
 API_URL = "https://merchandising.straighttohell.eu/api/json/manage_orders/find"
 
 
-def clean_orders(response_json):
+def clean_orders(orders_list):
     """Return a list
 
     Select orders that are not already programmed.
     """
     cleans = []
 
-    # print(len(response_json["orders"]))
-    for order in response_json["orders"]:
+    for order in orders_list:
         print(f"Processing order {order['order_id']}")
 
         lines_to_do = False
@@ -77,10 +76,19 @@ def get_orders(days_back):
         "condition": "6",
         "date1": start_date_formatted,
         "username": USERNAME,
-        "password": PASSWORD
+        "password": PASSWORD,
+        "limit": 100,
+        "offset": 0
     }
 
-    response = requests.get(API_URL, params=params)
-    orders = clean_orders(response.json())
+    all_orders = []
+    while True:
+        response = requests.get(API_URL, params=params)
+        data = response.json()
+        all_orders += data["orders"]
+        print(f"Fetched {len(all_orders)} / {data['total']} orders from Deco")
+        if len(all_orders) >= int(data["total"]):
+            break
+        params["offset"] += 100
 
-    return orders
+    return clean_orders(all_orders)
