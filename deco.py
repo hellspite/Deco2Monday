@@ -37,6 +37,8 @@ def clean_orders(response_json):
                         lines_to_do = True
                     elif line2["production_assigned_to"]["firstname"] == "Nicola":
                         lines_to_do = False
+                    else:
+                        lines_to_do = True
                 except (TypeError, KeyError) as error:
                     lines_to_do = True
             else:
